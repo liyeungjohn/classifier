@@ -2,11 +2,14 @@ from utility_digit_classifier import *
 from math import sqrt
 import sys, logging
 
+logging.basicConfig(level=logging.DEBUG)
+#logging.disable(logging.CRITICAL)
+
 def calc_euclidean_distance(digit1, digit2):
 	enforce_lists_length_equality(digit1, digit2)
 	distance = 0
 	for i in range(len(digit1)):
-		distance += pow((digit1[i] - digit2[i]), 2)
+	 	distance += pow((digit1[i] - digit2[i]), 2)
 	return sqrt(distance)
 
 class digit_classifier(object):
@@ -32,12 +35,12 @@ class digit_classifier(object):
 		self.test_features = read_features(config["test_file"])
 		self.k = int(config["k"])
 		enforce_lists_length_equality(self.train_features, self.train_labels)
-		enforce_lists_length_equality(self.train_features, self.test_features)
+		logging.debug("done init")
 
 	def solve(self):
 		answer = []
 		for test_number in self.test_features:
-			answer.append(self.solve_class(self.test_features))
+			answer.append(self.solve_class(test_number))
 		return answer
 
 	def treat_answer(self, answer):
@@ -49,35 +52,38 @@ class digit_classifier(object):
 			total_length = total
 			diff = 0
 			for i in range(total):
-				if answer[i] != solution[i]
+				if answer[i] != solution[i]:
 					diff += 1
-			print("Error rate: " + str(diff/total) + " diff: " + str(diff) + " total: " + total)
+			f = open("error_rate.txt", "a")
+			f.write("train: " + self.train_features + " | " + self.train_labels + " test: " + self.test_features + " k: " + self.k + "\n")
+			f.write("Error rate: " + str(diff/total) + " diff: " + str(diff) + " total: " + total + "\n")
+			f.close()
 
 	def solve_class(self, feature):
 		distance_list = []
 		for i in range(len(self.train_features)):
-			distance = calc_euclidean_distance(feature, self.train_features)
-			distance_list = distance_list.append((distance, self.train_features[i], self.train_labels[i]))
-		sorted(distance_list, key=lambda number: number[0], reverse=True)
+			distance = calc_euclidean_distance(feature, self.train_features[i])
+			distance_list.append((distance, self.train_labels[i]))
+		distance_list = sorted(distance_list, key=lambda number: number[0], reverse=True)
 		distance_list = distance_list[:self.k]
-		return resolve_votes(distance_list)
+		return self.resolve_votes(distance_list)
 
 	def resolve_votes(self, votes):
 		candidates = dict()
 		for vote in votes:
-			candidate_key = vote[2]
+			candidate_key = vote[1]
 			if not candidate_key in candidates:
 				candidates[candidate_key] = 0
-			candidates[candidate_keyc] += 1 
+			candidates[candidate_key] += 1 
 		return max(candidates, key=candidates.get)
 
 	@staticmethod
-	def parse_class(self, csv_class):
+	def parse_class(csv_class):
 		return int(csv_class)
 
 #main logic
 if __name__ == "__main__":
-	
+
 	#Command line parsing
 	argv = sys.argv[1:]
 	if not (len(argv) == 4 or len(argv) == 5):
@@ -93,6 +99,7 @@ if __name__ == "__main__":
 		config["solution_file"] = argv[3]
 		config["k"] = argv[4]
 
-	answer = digit_classifier(config).solve()
-
+	solver = digit_classifier(config)
+	answer = solver.solve()
+	solver.treat_answer(answer)
 	sys.exit(0)
