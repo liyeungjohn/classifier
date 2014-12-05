@@ -1,0 +1,10 @@
+config:  {'test_file': 'valFeatures.csv', 'k': '1', 'solution_file': 'valLabels.csv', 'feature_file': 'trainFeatures.csv', 'mode': 1, 'label_file': 'trainLabels.csv'}
+Error rate: 0 diff: 89 total: 1000
+config:  {'test_file': 'valFeatures.csv', 'k': '2', 'solution_file': 'valLabels.csv', 'feature_file': 'trainFeatures.csv', 'mode': 1, 'label_file': 'trainLabels.csv'}
+Error rate: 0 diff: 99 total: 1000
+config:  {'test_file': 'valFeatures.csv', 'k': '5', 'solution_file': 'valLabels.csv', 'feature_file': 'trainFeatures.csv', 'mode': 1, 'label_file': 'trainLabels.csv'}
+Error rate: 0 diff: 96 total: 1000
+config:  {'test_file': 'valFeatures.csv', 'k': '10', 'solution_file': 'valLabels.csv', 'feature_file': 'trainFeatures.csv', 'mode': 1, 'label_file': 'trainLabels.csv'}
+Error rate: 0 diff: 116 total: 1000
+config:  {'test_file': 'valFeatures.csv', 'k': '25', 'solution_file': 'valLabels.csv', 'feature_file': 'trainFeatures.csv', 'mode': 1, 'label_file': 'trainLabels.csv'}
+Error rate: 0 diff: 131 total: 1000
