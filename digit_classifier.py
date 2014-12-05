@@ -35,7 +35,7 @@ class digit_classifier(object):
 		self.test_features = read_features(config["test_file"])
 		self.k = int(config["k"])
 		enforce_lists_length_equality(self.train_features, self.train_labels)
-		logging.debug("done init")
+		logging.debug("config:  " + str(self.config) + "\n")
 
 	def solve(self):
 		answer = []
@@ -44,19 +44,19 @@ class digit_classifier(object):
 		return answer
 
 	def treat_answer(self, answer):
-		write_features("digitsOutput" + str(self.k), answer)		
+		write_features("digitsOutput" + str(self.k) + ".csv", answer)		
 		if self.mode == digit_classifier.VERIFY_MODE:
 			solution = read_labels(config["solution_file"])
 			enforce_lists_length_equality(answer, solution)
 
-			total_length = total
+			total = len(answer)
 			diff = 0
 			for i in range(total):
 				if answer[i] != solution[i]:
 					diff += 1
 			f = open("error_rate.txt", "a")
-			f.write("train: " + self.train_features + " | " + self.train_labels + " test: " + self.test_features + " k: " + self.k + "\n")
-			f.write("Error rate: " + str(diff/total) + " diff: " + str(diff) + " total: " + total + "\n")
+			f.write("config:  " + str(self.config) + "\n")
+			f.write("Error rate: " + str(diff/total) + " diff: " + str(diff) + " total: " + str(total) + "\n")
 			f.close()
 
 	def solve_class(self, feature):
@@ -64,7 +64,7 @@ class digit_classifier(object):
 		for i in range(len(self.train_features)):
 			distance = calc_euclidean_distance(feature, self.train_features[i])
 			distance_list.append((distance, self.train_labels[i]))
-		distance_list = sorted(distance_list, key=lambda number: number[0], reverse=True)
+		distance_list = sorted(distance_list, key=lambda number: number[0])
 		distance_list = distance_list[:self.k]
 		return self.resolve_votes(distance_list)
 
@@ -96,6 +96,7 @@ if __name__ == "__main__":
 	config["test_file"] =  argv[2]
 	config["k"] = argv[3]
 	if len(argv) == 5:
+		config["mode"] = digit_classifier.VERIFY_MODE
 		config["solution_file"] = argv[3]
 		config["k"] = argv[4]
 
