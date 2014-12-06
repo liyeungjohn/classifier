@@ -2,4 +2,4 @@ a. error_rate(k=1) = 89/1000, error_rate(k=2) = 99/1000, error_rate(k=5) = 96/10
 b. I used the regular tie-breaking rule from python sorted() method.
 c. My algorithm performs better with k = 1 than k = 2. This is because the nearest neighbor search should be more accurate than including 1 extra not-as-near neighbor.
 d. I looked at valDigit4.png. The digit should be 5 but I got a 3. I think lower 2/3 of the 5 in the image is exactly the same as a 3 and that might have caused the misclassification. I think some extra features can include number of white pixels, a measure of curvature of the digit, etc.
-e. bonus
+e. 
